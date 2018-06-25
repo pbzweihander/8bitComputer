@@ -68,8 +68,8 @@ There is two type of instruction
 | JMP | 2 byte | 1011 | Jump to _Addr_ | `PC <- Addr + 1` |
 | JMR | 1 byte | 1100 | Jump to the value of register _ACC_ | `PC <- ACC + Imm + 1` |
 | BRA | 2 byte | 1101 | Branch to _Addr_. [Detail](#Branch-Detail) |  |
-| BRR | 1 byte | 1110 | Branch to the value of register _ACC_. [Detail](#Branch-Detail) |  |
 | HLT | 1 byte | 1111 | Halt the machine |  |
+|  |  | 1110 | Reserve |  |
 
 ### Branch Detail
 
@@ -86,39 +86,25 @@ There is two type of instruction
     - _Z_ is 1 and _ACC_ is equals to zero
     - _P_ is 1 and _ACC_ is greater than zero
 1. So branch instruction is same as following pseudo code:
-    - BRA
-      ```pseudo
-      GZ.ACC = ACC > 0
-      EZ.ACC = ACC == 0
-      LZ.ACC = ACC < 0
-      N = Instruction[2]
-      Z = Instruction[1]
-      P = Instruction[0]
-      BR = (P AND GZ.ACC) OR (Z AND EZ.ACC) OR (N AND LZ.ACC)
+    ```pseudo
+    GZ.ACC = ACC > 0
+    EZ.ACC = ACC == 0
+    LZ.ACC = ACC < 0
+    N = Instruction[2]
+    Z = Instruction[1]
+    P = Instruction[0]
+    BR = (P AND GZ.ACC) OR (Z AND EZ.ACC) OR (N AND LZ.ACC)
 
-      if BR is 1 then
-          PC <- Addr + 1
-      ```
-    - BRR
-      ```pseudo
-      GZ.ACC = ACC > 0
-      EZ.ACC = ACC == 0
-      LZ.ACC = ACC < 0
-      N = Instruction[2]
-      Z = Instruction[1]
-      P = Instruction[0]
-      BR = (P AND GZ.ACC) OR (Z AND EZ.ACC) OR (N AND LZ.ACC)
-
-      if BR is 1 then
-          PC <- ACC + 1
-      ```
+    if BR is 1 then
+        PC <- Addr + 1
+    ```
 
 1. For example, if _ACC_ is 00000101,
     - 1101 0100: No branch
-    - 1110 0110: No branch
+    - 1101 0110: No branch
     - 1101 0001: Branch!
-    - 1110 0101: Branch!
-1. If N, Z, and P is all 1, BRA is same as JMP, BRR is same as JMR.
+    - 1101 0101: Branch!
+1. If N, Z, and P is all 1, BRA instruction is same as JMP instruction.
 
 ## Instruction Cycle
 
@@ -180,9 +166,6 @@ There is two type of instruction
           1. `PC <- PC + 1`
           1. `MAR <- PC`
           1. `PC <- Mem[MAR]`
-    - BRR
-      - if _BR_ is 1
-          1. `PC <- ACC`
     - HLT
       1. `Halt`
 1. `PC <- PC + 1`
@@ -245,9 +228,6 @@ There is two type of instruction
           1. INC.PC
           1. ST.MAR LD.PC
           1. ST.PC LD.MEM
-    - BRR
-      - if _BR_ is 1
-          1. ST.PC LD.ACC
     - HLT
       1. HLT
 1. INC.PC

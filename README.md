@@ -64,7 +64,7 @@ There is two type of instruction
 | LDP | 1 byte | 0111 | Load _ACC_ with the value of _PC_ | `ACC <- PC` |
 | LDD | 2 byte | 1000 | Load _ACC_ with the value of _Addr_ directly | `ACC <- Addr` |
 | STA | 2 byte | 1001 | Store _ACC_ to memory with _Addr_ | `Mem[Addr] <- ACC` |
-| OUT | 1 byte | 1010 | Store the ACC's value to the output register | `OR <- ACC` |
+| OUT | 1 byte | 1010 | Store the _ACC_'s value to the output register | `OR <- ACC` |
 | JMP | 2 byte | 1011 | Jump to _Addr_ | `PC <- Addr + 1` |
 | JMR | 1 byte | 1100 | Jump to the value of register _ACC_ | `PC <- ACC + Imm + 1` |
 | BRA | 2 byte | 1101 | Branch to _Addr_. [Detail](#Branch-Detail) |  |
